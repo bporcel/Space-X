@@ -10,7 +10,7 @@
     <h1>Next Launch</h1>
     <b-card-small :launch="nextLaunches" />
     <h1>Past launches</h1>
-    <b-card-pagination :records="pastLaunches.length" :perPage="4" :data="pastLaunches.reverse()" />
+    <b-card-pagination :records="pastLaunches.length" :perPage="4" :data="pastLaunches" />
   </div>
 </template>
 

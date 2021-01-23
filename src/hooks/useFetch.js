@@ -13,7 +13,13 @@ const useFetch = (url) => {
         response
           .json()
           .then((data) => data)
-          .then((res) => (state.response = res))
+          .then((res) => {
+            if (url.includes("past")) {
+              state.response = res.reverse();
+            } else {
+              state.response = res;
+            }
+          })
       );
     } catch (err) {
       state.error = err;
@@ -21,6 +27,7 @@ const useFetch = (url) => {
       state.fetching = false;
     }
   };
+
   return { ...toRefs(state), fetchData };
 };
 
