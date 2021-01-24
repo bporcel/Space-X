@@ -1,11 +1,22 @@
 <template>
   <div class="card">
-    <p>Flight number {{ launch.flight_number }}</p>
+    <p>
+      Flight number {{ launch.flight_number }}
+      <span class="date"
+        >{{
+          launch.date_utc.replace("T", " · ").replace(":00.000Z", "")
+        }}
+        UTC</span
+      >
+    </p>
     <div class="grid">
       <img v-if="launch.links.patch.small" :src="launch.links.patch.small" />
       <div>
         <p v-if="launch.details">{{ launch.details }}</p>
         <p v-else>No details</p>
+        <p v-if="fetching">Fetching Rocket</p>
+        <p v-else-if="error">An error occurred</p>
+        <p v-else><strong>Rocket:</strong> {{ rocket.name }}</p>
         <br />
         <p>
           <a
@@ -33,6 +44,7 @@
 </template>
 
 <script>
+import useFetch from "@/hooks/useFetch";
 export default {
   name: "b-card-small",
   props: {
@@ -40,6 +52,14 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  setup(props) {
+    const getRocketUrl = `https://api.spacexdata.com/v4/rockets/${props.launch.rocket}`;
+    const { response: rocket, error, fetching, fetchData } = useFetch(
+      getRocketUrl
+    );
+    fetchData();
+    return { rocket, error, fetching };
   },
 };
 </script>
@@ -81,6 +101,14 @@ export default {
 
   & p {
     margin: 0 0 1em 0;
+  }
+
+  & .date {
+    color: #858585;
+    &::before {
+      content: "\2022";
+      padding: 1em;
+    }
   }
 }
 
