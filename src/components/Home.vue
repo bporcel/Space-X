@@ -6,11 +6,11 @@
   </p>
   <div v-else class="grid">
     <div class="flights">
-      <h1>Latest Launch</h1>
+      <h1>Next flight</h1>
+      <b-card :launch="nextLaunch" />
+      <h1>Latest flight</h1>
       <b-card :launch="latestLaunch" />
-      <h1>Next Launch</h1>
-      <b-card :launch="nextLaunches" />
-      <h1>Past launches</h1>
+      <h1>Past flights</h1>
       <b-card-pagination
         :records="pastLaunches.length"
         :perPage="4"
@@ -67,7 +67,7 @@ export default {
       currentLaunch.success ? acc + 1 : acc;
 
     const {
-      response: nextLaunches,
+      response: nextLaunch,
       fetching: nextFetching,
       error: nextError,
       fetchData: nextFetchData,
@@ -81,7 +81,7 @@ export default {
       pastLaunches,
       pastError,
       pastFetching,
-      nextLaunches,
+      nextLaunch,
       nextFetching,
       nextError,
       reducer,

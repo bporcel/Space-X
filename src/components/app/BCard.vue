@@ -17,6 +17,23 @@
         <p v-if="fetching">Fetching Rocket</p>
         <p v-else-if="error">An error occurred</p>
         <p v-else><strong>Rocket:</strong> {{ rocket.name }}</p>
+        <p
+          :class="
+            launch.success
+              ? 'success'
+              : launch.success === false
+              ? 'failure'
+              : ''
+          "
+        >
+          {{
+            launch.success
+              ? "Success"
+              : launch.success === false
+              ? "Failure"
+              : ""
+          }}
+        </p>
         <br />
         <p>
           <a
@@ -103,6 +120,14 @@ export default {
       padding: 1em;
     }
   }
+}
+
+.success {
+  color: #43a160;
+}
+
+.failure {
+  color: #e4345a;
 }
 
 @media screen and (max-width: 1400px) {
