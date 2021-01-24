@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    <p class="name">{{ launch.name }}</p>
     <p>
       Flight number {{ launch.flight_number }}
       <span class="date"
@@ -12,29 +13,31 @@
     <div class="grid">
       <img v-if="launch.links.patch.small" :src="launch.links.patch.small" />
       <div>
-        <p v-if="launch.details">{{ launch.details }}</p>
+        <p class="short" v-if="launch.details">{{ launch.details }}</p>
         <p v-else>No details</p>
         <p v-if="fetching">Fetching Rocket</p>
         <p v-else-if="error">An error occurred</p>
         <p v-else><strong>Rocket:</strong> {{ rocket.name }}</p>
-        <p
-          :class="
-            launch.success
-              ? 'success'
-              : launch.success === false
-              ? 'failure'
-              : ''
-          "
-        >
-          {{
-            launch.success
-              ? "Success"
-              : launch.success === false
-              ? "Failure"
-              : ""
-          }}
+        <p>
+          <strong>Mission status: </strong>
+          <span
+            :class="
+              launch.success
+                ? 'success'
+                : launch.success === false
+                ? 'failure'
+                : ''
+            "
+          >
+            {{
+              launch.success
+                ? "Success"
+                : launch.success === false
+                ? "Failure"
+                : ""
+            }}
+          </span>
         </p>
-        <br />
         <p>
           <a
             v-if="launch.links.webcast"
@@ -89,17 +92,17 @@ export default {
 
   & a {
     text-decoration: none;
-    color: #2c3e50;
+    color: #5481af;
     padding-right: 1em;
     margin-top: 1em;
 
     &:hover {
-      color: #5481af;
+      color: #2c3e50;
     }
 
     &::before {
       content: "\2022";
-      padding: 1em 1em 1em 0;
+      padding: 1em 0.3em 1em 0;
     }
   }
 
@@ -119,6 +122,16 @@ export default {
       content: "\2022";
       padding: 1em;
     }
+  }
+
+  & .name {
+    font-size: 1.3em;
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+
+  & .short {
+    margin-right: 1em;
   }
 }
 
@@ -147,7 +160,7 @@ export default {
     }
 
     & img {
-      justify-self: center;
+      padding: 0 0 1em 0;
     }
 
     & a {
