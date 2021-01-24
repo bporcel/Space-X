@@ -2,28 +2,45 @@
   <h1 class="title">Space-x launch missions</h1>
   <p v-if="latestFetching || pastFetching || nextFetching">Fetching data</p>
   <p v-else-if="latestError || pastError || nextError">
-    It has been a problem fetching the latest launch.
+    An error occurred fetching the latest launch.
   </p>
-  <div v-else>
-    <h1>Latest Launch</h1>
-    <b-card-small :launch="latestLaunch" />
-    <h1>Next Launch</h1>
-    <b-card-small :launch="nextLaunches" />
-    <h1>Past launches</h1>
-    <b-card-pagination :records="pastLaunches.length" :perPage="4" :data="pastLaunches" />
+  <div v-else class="grid">
+    <div class="flights">
+      <h1>Latest Launch</h1>
+      <b-card :launch="latestLaunch" />
+      <h1>Next Launch</h1>
+      <b-card :launch="nextLaunches" />
+      <h1>Past launches</h1>
+      <b-card-pagination
+        :records="pastLaunches.length"
+        :perPage="4"
+        :data="pastLaunches"
+      />
+    </div>
+    <div class="counter">
+      <h1>Counter</h1>
+      <b-counter
+        :totalFlights="pastLaunches.length + 1"
+        :succesFullFlights="
+          pastLaunches.reduce(reducer, latestLaunch.success ? 1 : 0)
+        "
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import useFetch from "@/hooks/useFetch";
-import BCardSmall from "@/components/app/BCardSmall";
+import BCard from "@/components/app/BCard";
 import BCardPagination from "@/components/shared/BCardPagination";
+import BCounter from "@/components/app/BCounter";
 
 export default {
   name: "Home",
   components: {
-    BCardSmall,
+    BCard,
     BCardPagination,
+    BCounter,
   },
   setup() {
     const latestLaunchUrl = "https://api.spacexdata.com/v4/launches/latest";
@@ -46,6 +63,9 @@ export default {
     } = useFetch(pastLaunchesUrl);
     pastFetchData();
 
+    const reducer = (acc, currentLaunch) =>
+      currentLaunch.success ? acc + 1 : acc;
+
     const {
       response: nextLaunches,
       fetching: nextFetching,
@@ -64,9 +84,36 @@ export default {
       nextLaunches,
       nextFetching,
       nextError,
+      reducer,
     };
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.grid {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 0.33fr;
+  align-items: start;
+  grid-gap: 10em;
+}
+
+@media screen and (max-width: 1800px) {
+  .grid {
+    grid-template-rows: auto auto;
+    grid-template-columns: auto;
+    grid-template-areas:
+      "counter"
+      "flights";
+  }
+
+  .flights {
+    grid-area: flights;
+  }
+
+  .counter {
+    grid-area: counter;
+  }
+}
+</style>

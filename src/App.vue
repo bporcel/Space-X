@@ -3,14 +3,14 @@
 </template>
 
 <script>
-import Home from './components/Home.vue'
+import Home from "./components/Home.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Home
-  }
-}
+    Home,
+  },
+};
 </script>
 
 <style>
@@ -19,20 +19,28 @@ body {
 }
 
 #app {
-  font-family: 'Roboto slab', serif;
+  font-family: "Roboto slab", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #ffffff;
-  margin: 2% 30% 2% 10%;
-  letter-spacing: .1em;
+  margin: 2% 20% 2% 10%;
+  letter-spacing: 0.1em;
 }
 
 .title {
   font-size: 3em;
 }
 
+.card {
+  background-color: #ffffff;
+  color: #2c3e50;
+  border: solid 1px #f3f3f3;
+  border-radius: 0.1em;
+  margin: 1em 0;
+  padding: 1em;
+}
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1050px) {
   #app {
     margin: 1em;
   }

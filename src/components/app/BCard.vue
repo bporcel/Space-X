@@ -46,7 +46,7 @@
 <script>
 import useFetch from "@/hooks/useFetch";
 export default {
-  name: "b-card-small",
+  name: "b-card",
   props: {
     launch: {
       type: Object,
@@ -66,13 +66,6 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-  background-color: #ffffff;
-  color: #2c3e50;
-  border: solid 1px #f3f3f3;
-  border-radius: 0.1em;
-  margin: 1em 0;
-  padding: 1em;
-
   & img {
     width: 100px;
   }
@@ -120,7 +113,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1200px) {
   .card {
     & .grid {
       display: grid;
@@ -145,7 +138,7 @@ export default {
           content: none;
         }
       }
-      
+
       & a {
         display: block;
       }

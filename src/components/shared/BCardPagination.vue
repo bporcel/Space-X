@@ -1,5 +1,5 @@
 <template>
-  <b-card-small :key="key" v-for="(item, key) in items" :launch="item" />
+  <b-card :key="key" v-for="(item, key) in items" :launch="item" />
 
   <button
     id="prev"
@@ -28,10 +28,10 @@
 
 <script>
 import { ref } from "vue";
-import BCardSmall from "@/components/app/BCardSmall";
+import BCard from "@/components/app/BCard";
 export default {
   name: "b-card-pagination",
-  components: { BCardSmall },
+  components: { BCard },
   props: {
     records: {
       type: Number,
