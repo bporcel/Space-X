@@ -16,6 +16,7 @@ const useFetch = (url) => {
           .then((res) => {
             if (url.includes("past")) {
               state.response = res.reverse();
+              state.response = state.response.slice(1, state.response.length);
             } else {
               state.response = res;
             }

@@ -1,5 +1,5 @@
 <template>
-  <h1 class="title">Space-x Launch details</h1>
+  <h1 class="title">Space-x launch missions</h1>
   <p v-if="latestFetching || pastFetching || nextFetching">Fetching data</p>
   <p v-else-if="latestError || pastError || nextError">
     It has been a problem fetching the latest launch.

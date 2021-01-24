@@ -112,6 +112,14 @@ export default {
   }
 }
 
+@media screen and (max-width: 1400px) {
+  .card {
+    & a {
+      display: block;
+    }
+  }
+}
+
 @media screen and (max-width: 900px) {
   .card {
     & .grid {
@@ -122,6 +130,25 @@ export default {
 
     & img {
       justify-self: center;
+    }
+
+    & a {
+      display: inline;
+    }
+  }
+
+  @media screen and (max-width: 760px) {
+    .card {
+      & .date {
+        display: block;
+        &::before {
+          content: none;
+        }
+      }
+      
+      & a {
+        display: block;
+      }
     }
   }
 }
