@@ -1,5 +1,34 @@
 <template>
-  <b-card :key="key" v-for="(item, key) in items" :launch="item" />
+  <b-card
+    :key="key"
+    v-for="(item, key) in items"
+    :title="item.name"
+    :subtitle="{
+      first: `Flight number ${item.flight_number}`,
+      second: item.date_utc.replace('T', ' · ').replace(':00.000Z', ''),
+    }"
+    :img="item.links.patch.small"
+    :description="item.details"
+    :additionalInfo="[
+      {
+        text: 'Rocket: ',
+        data: rockets.find((rocket) => rocket.id === item.rocket).name,
+      },
+      {
+        text: 'Mission status: ',
+        data: item.success
+          ? 'Success'
+          : item.success === false
+          ? 'Failure'
+          : 'Yet unknown',
+      },
+    ]"
+    :links="[
+      { url: item.links.webcast, text: 'Watch on youtube' },
+      { url: item.links.article, text: 'Read the full article' },
+      { url: item.links.reddit.campaign, text: 'Campaign in Reddit' },
+    ]"
+  />
 
   <button
     id="prev"
@@ -44,6 +73,9 @@ export default {
     data: {
       type: Array,
       required: true,
+    },
+    rockets: {
+      type: Array,
     },
   },
   setup(props) {

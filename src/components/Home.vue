@@ -1,51 +1,114 @@
 <template>
-  <h1 class="title">Space-x launch missions</h1>
-  <p v-if="latestFetching || pastFetching || nextFetching">Fetching data</p>
+  <p v-if="latestFetching || pastFetching || nextFetching">
+    Fetching data
+  </p>
   <p v-else-if="latestError || pastError || nextError">
     An error occurred fetching the latest launch.
   </p>
-  <div v-else class="grid">
+  <div v-else>
     <div class="flights">
       <h1>Next flight</h1>
-      <b-card :launch="nextLaunch" />
+      <b-card
+        :title="nextLaunch.name"
+        :subtitle="{
+          first: `Flight number ${nextLaunch.flight_number}`,
+          second: nextLaunch.date_utc
+            .replace('T', ' · ')
+            .replace(':00.000Z', ''),
+        }"
+        :img="nextLaunch.links.patch.small"
+        :description="nextLaunch.details"
+        :additionalInfo="[
+          {
+            text: 'Rocket: ',
+            data: rockets.find((rocket) => rocket.id === nextLaunch.rocket)
+              .name,
+          },
+          {
+            text: 'Mission status: ',
+            data: nextLaunch.success
+              ? 'Success'
+              : nextLaunch.success === false
+              ? 'Failure'
+              : 'Yet unknown',
+          },
+        ]"
+        :links="[
+          { url: nextLaunch.links.webcast, text: 'Watch on youtube' },
+          { url: nextLaunch.links.article, text: 'Read the full article' },
+          { url: nextLaunch.links.reddit.campaign, text: 'Campaign in Reddit' },
+        ]"
+      />
       <h1>Latest flight</h1>
-      <b-card :launch="latestLaunch" />
+      <b-card
+        :title="latestLaunch.name"
+        :subtitle="{
+          first: `Flight number ${latestLaunch.flight_number}`,
+          second: latestLaunch.date_utc
+            .replace('T', ' · ')
+            .replace(':00.000Z', ''),
+        }"
+        :img="latestLaunch.links.patch.small"
+        :description="latestLaunch.details"
+        :additionalInfo="[
+          {
+            text: 'Rocket: ',
+            data: rockets.find((rocket) => rocket.id === latestLaunch.rocket)
+              .name,
+          },
+          {
+            text: 'Mission status: ',
+            data: latestLaunch.success
+              ? 'Success'
+              : latestLaunch.success === false
+              ? 'Failure'
+              : '',
+          },
+        ]"
+        :links="[
+          { url: latestLaunch.links.webcast, text: 'Watch on youtube' },
+          { url: latestLaunch.links.article, text: 'Read the full article' },
+          {
+            url: latestLaunch.links.reddit.campaign,
+            text: 'Campaign in Reddit',
+          },
+        ]"
+      />
+
       <h1>Past flights</h1>
       <b-card-pagination
         :records="pastLaunches.length"
-        :perPage="4"
+        :perPage="5"
         :data="pastLaunches"
-      />
-    </div>
-    <div class="counter">
-      <h1>Counter</h1>
-      <b-counter
-        :totalFlights="pastLaunches.length + 1"
-        :succesFullFlights="
-          pastLaunches.reduce(reducer, latestLaunch.success ? 1 : 0)
-        "
+        :rockets="rockets"
       />
     </div>
   </div>
 </template>
-
 <script>
 import useFetch from "@/hooks/useFetch";
 import BCard from "@/components/app/BCard";
 import BCardPagination from "@/components/shared/BCardPagination";
-import BCounter from "@/components/app/BCounter";
 
 export default {
   name: "Home",
   components: {
     BCard,
     BCardPagination,
-    BCounter,
   },
   setup() {
     const latestLaunchUrl = "https://api.spacexdata.com/v4/launches/latest";
     const pastLaunchesUrl = "https://api.spacexdata.com/v4/launches/past";
     const nextLaunchUrl = "https://api.spacexdata.com/v4/launches/next";
+    const rocketsUrl = "https://api.spacexdata.com/v4/rockets";
+
+    const {
+      response: rockets,
+      error: rocketsError,
+      fetching: rocketsFetching,
+      fetchData: rocketsFetch,
+    } = useFetch(rocketsUrl);
+    rocketsFetch();
 
     const {
       response: latestLaunch,
@@ -62,9 +125,6 @@ export default {
       fetchData: pastFetchData,
     } = useFetch(pastLaunchesUrl);
     pastFetchData();
-
-    const reducer = (acc, currentLaunch) =>
-      currentLaunch.success ? acc + 1 : acc;
 
     const {
       response: nextLaunch,
@@ -84,36 +144,10 @@ export default {
       nextLaunch,
       nextFetching,
       nextError,
-      reducer,
+      rockets,
+      rocketsError,
+      rocketsFetching,
     };
   },
 };
 </script>
-
-<style scoped>
-.grid {
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 1fr 0.33fr;
-  align-items: start;
-  grid-gap: 10em;
-}
-
-@media screen and (max-width: 1800px) {
-  .grid {
-    grid-template-rows: auto auto;
-    grid-template-columns: auto;
-    grid-template-areas:
-      "counter"
-      "flights";
-  }
-
-  .flights {
-    grid-area: flights;
-  }
-
-  .counter {
-    grid-area: counter;
-  }
-}
-</style>
