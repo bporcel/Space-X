@@ -5,7 +5,7 @@
     :title="item.name"
     :subtitle="{
       first: `Flight number ${item.flight_number}`,
-      second: item.date_utc.replace('T', ' · ').replace(':00.000Z', ''),
+      second: item.date_utc.replace('T', ' · ').replace('.000Z', ''),
     }"
     :img="item.links.patch.small"
     :description="item.details"
