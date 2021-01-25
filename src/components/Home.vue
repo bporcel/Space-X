@@ -74,7 +74,7 @@
           },
         ]"
       />
-
+      <div id="scroll"></div>
       <h1>Past flights</h1>
       <b-card-pagination
         :records="pastLaunches.length"

@@ -96,6 +96,8 @@ export default {
       const start = (state.currentPage.value - 1) * props.perPage;
       const end = start + props.perPage;
       state.items.value = props.data.slice(start, end);
+      const scroll = document.getElementById("scroll");
+      scroll.scrollIntoView({ behavior: "smooth" });
     };
 
     return { ...state, handleClickButton };
