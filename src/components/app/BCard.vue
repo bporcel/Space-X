@@ -27,7 +27,7 @@
           >
         </p>
         <p class="links">
-          <a :key="key" v-for="(link, key) in links" :href="link.url">{{
+          <a :key="key" v-for="(link, key) in filteredLinks" :href="link.url">{{
             link.text
           }}</a>
         </p>
@@ -63,6 +63,10 @@ export default {
       type: String,
     },
   },
+  setup(props) {
+    const filteredLinks = props.links.filter((link) => link.url !== null);
+    return { filteredLinks };
+  },
 };
 </script>
 
@@ -94,7 +98,7 @@ export default {
 
   & a {
     text-decoration: none;
-    color: #5481af;
+    color: #23baf5;
     padding-right: 1em;
     margin-top: 1em;
 
