@@ -1,13 +1,21 @@
 <template>
   <header>
-    <router-link
-      :class="`link ${route.fullPath === '/' ? 'active' : ''}`"
-      :to="{ name: 'Home' }"
-      >Home</router-link
-    ><span class="bullet" /><router-link
-      :class="`link ${route.fullPath === '/hangar' ? 'active' : ''}`"
-      :to="{ name: 'Hangar' }"
-      >Hangar</router-link
+    <div>
+      <router-link
+        :class="`link ${route.fullPath === '/' ? 'active' : ''}`"
+        :to="{ name: 'Home' }"
+        >Home</router-link
+      ><span class="bullet" /><router-link
+        :class="`link ${route.fullPath === '/hangar' ? 'active' : ''}`"
+        :to="{ name: 'Hangar' }"
+        >Hangar</router-link
+      >
+    </div>
+    <a
+      class="link coffee"
+      href="https://www.buymeacoffee.com/bporcel"
+      target="_blank"
+      >Buy me a cofee</a
     >
   </header>
   <h1 class="title">Space-x launch missions</h1>
@@ -82,7 +90,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .grid {
   display: grid;
   grid-template-rows: auto;
@@ -97,6 +105,19 @@ header {
   width: 100%;
   top: 0;
   padding: 2em 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  justify-content: space-between;
+  grid-gap: 10em;
+
+  & .coffee {
+    color: #bb9b42;
+    border-radius: 0.1em;
+    &:hover {
+      color: #5a4c26;
+    }
+  }
 }
 
 @media screen and (max-width: 1200px) {
