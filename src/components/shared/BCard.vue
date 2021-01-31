@@ -76,7 +76,7 @@ export default {
   color: $darkBlue;
   border-radius: 0.1em;
   padding: 1em;
-  margin: 1em 0;
+  margin: 2em 0;
 
   & p {
     margin: 0 0 1em 0;

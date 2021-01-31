@@ -109,7 +109,7 @@ export default {
 <style lang="scss" scoped>
 button {
   font-family: "Roboto slab", serif;
-  font-size: 1.5em;
+  font-size: 1.1em;
   color: $white;
   background: none;
   border: none;
@@ -126,11 +126,11 @@ button {
   }
 
   &#next {
-    font-size: 2em;
+    font-size: 1.5em;
   }
 
   &#prev {
-    font-size: 2em;
+    font-size: 1.5em;
   }
 }
 </style>
