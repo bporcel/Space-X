@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <p class="name">{{ title }}</p>
+    <p class="title">{{ title }}</p>
     <p>
       {{ subtitle.first
       }}<span class="subtitleSecond">{{ subtitle.second }}</span>
@@ -8,7 +8,7 @@
     <div :class="img ? 'grid' : ''">
       <img v-if="img" :src="img" />
       <div>
-        <p class="mr-1">{{ description }}</p>
+        <p class="description">{{ description }}</p>
         <p
           class="additionalInfo"
           :key="key"
@@ -70,45 +70,82 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.success {
-  color: #43a160;
-}
-
-.failure {
-  color: #e4345a;
-}
-
-.unknown {
-  color: #342bb1;
-}
-
+<style lang="scss">
 .card {
-  & .additionalInfo {
+  background-color: $white;
+  color: $darkBlue;
+  border-radius: 0.1em;
+  padding: 1em;
+  margin: 1em 0;
+
+  & p {
+    margin: 0 0 1em 0;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.card {
+  & .title {
+    font-size: 1.3em;
     margin-bottom: 0;
+    font-weight: bold;
   }
 
-  & .mr-1 {
+  & .subtitleSecond {
+    color: $lightGray;
+    &::before {
+      content: "\2022";
+      padding: 1em;
+    }
+  }
+
+  & .grid {
+    display: grid;
+    grid-template-columns: 0.15fr 1fr;
+    grid-template-rows: auto;
+  }
+
+  & img {
+    width: 100px;
+  }
+
+  & .description {
     margin-right: 1em;
+  }
+
+  & .additionalInfo {
+    margin-bottom: 0;
+
+    & .success {
+      color: $green;
+    }
+
+    & .failure {
+      color: $red;
+    }
+
+    & .unknown {
+      color: $purple;
+    }
   }
 
   & .links {
     margin: 1em 0;
-  }
 
-  & a {
-    text-decoration: none;
-    color: #23baf5;
-    padding-right: 1em;
-    margin-top: 1em;
+    & a {
+      text-decoration: none;
+      color: $blue;
+      padding-right: 1em;
 
-    &:hover {
-      color: #2c3e50;
-    }
+      &:hover {
+        color: $lightBlue;
+      }
 
-    &::before {
-      content: "\2022";
-      padding: 1em 0.3em 1em 0;
+      &::before {
+        content: "\2022";
+        padding: 1em 0.3em 1em 0;
+      }
     }
   }
 }
@@ -135,6 +172,17 @@ export default {
   .card {
     & a {
       display: block;
+    }
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .card {
+    & .subtitleSecond {
+      display: block;
+      &::before {
+        content: none;
+      }
     }
   }
 }

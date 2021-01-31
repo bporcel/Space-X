@@ -5,7 +5,7 @@
     :title="item.name"
     :subtitle="{
       first: `Flight number ${item.flight_number}`,
-      second: item.date_utc.replace('T', ' · ').replace('.000Z', ''),
+      second: item.date_utc,
     }"
     :img="item.links.patch.small"
     :description="item.details"
@@ -56,8 +56,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import BCard from "@/components/app/BCard";
+import { reactive, toRefs } from "vue";
+import BCard from "@/components/shared/BCard";
 export default {
   name: "b-card-pagination",
   components: { BCard },
@@ -79,59 +79,58 @@ export default {
     },
   },
   setup(props) {
-    const state = {
-      currentPage: ref(1),
-      totalPages: Math.ceil(props.records / props.perPage),
-      items: ref(props.data.slice(0, props.perPage)),
-    };
+    const state = reactive({
+      currentPage: 1,
+      items: props.data.slice(0, props.perPage),
+    });
+
+    const totalPages = Math.ceil(props.records / props.perPage);
 
     const handleClickButton = (id) => {
       if (id === "next") {
-        state.currentPage.value++;
+        state.currentPage++;
       } else if (id === "prev") {
-        state.currentPage.value--;
+        state.currentPage--;
       } else {
-        state.currentPage.value = parseInt(id);
+        state.currentPage = parseInt(id);
       }
-      const start = (state.currentPage.value - 1) * props.perPage;
+      const start = (state.currentPage - 1) * props.perPage;
       const end = start + props.perPage;
-      state.items.value = props.data.slice(start, end);
+      state.items = props.data.slice(start, end);
       const scroll = document.getElementById("scroll");
       scroll.scrollIntoView({ behavior: "smooth" });
     };
 
-    return { ...state, handleClickButton };
+    return { ...toRefs(state), totalPages, handleClickButton };
   },
 };
 </script>
 
 <style lang="scss" scoped>
 button {
-  color: #ffffff;
-  background: none;
-  border: none;
   font-family: "Roboto slab", serif;
   font-size: 1.5em;
-  cursor: pointer;
+  color: $white;
+  background: none;
+  border: none;
   outline: none;
   margin: 0.2em;
+  cursor: pointer;
 
   &.active {
-    color: #5481af;
-  }
-
-  &#next {
-    font-size: 3em;
-    vertical-align: sub;
-  }
-
-  &#prev {
-    font-size: 3em;
-    vertical-align: sub;
+    color: $brown;
   }
 
   &:hover {
-    color: #5481af;
+    color: $brown;
+  }
+
+  &#next {
+    font-size: 2em;
+  }
+
+  &#prev {
+    font-size: 2em;
   }
 }
 </style>

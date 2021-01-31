@@ -1,75 +1,71 @@
 <template>
-  <p v-if="latestFetching || pastFetching || nextFetching">
+  <p v-if="fetching">
     Fetching data
   </p>
-  <p v-else-if="latestError || pastError || nextError">
+  <p v-else-if="error">
     An error occurred fetching the latest launch.
   </p>
-  <div v-else>
+  <div v-else-if="rockets.length > 0 && nextFlight && latestFlight && pastFlights.length > 0">
     <div class="flights">
       <h1>Next flight</h1>
       <b-card
-        :title="nextLaunch.name"
+        :title="nextFlight.name"
         :subtitle="{
-          first: `Flight number ${nextLaunch.flight_number}`,
-          second: nextLaunch.date_utc
-            .replace('T', ' · ')
-            .replace(':00.000Z', ''),
+          first: `Flight number ${nextFlight.flight_number}`,
+          second: nextFlight.date_utc,
         }"
-        :img="nextLaunch.links.patch.small"
-        :description="nextLaunch.details"
+        :img="nextFlight.links.patch.small"
+        :description="nextFlight.details"
         :additionalInfo="[
           {
             text: 'Rocket: ',
-            data: rockets.find((rocket) => rocket.id === nextLaunch.rocket)
+            data: rockets.find((rocket) => rocket.id === nextFlight.rocket)
               .name,
           },
           {
             text: 'Mission status: ',
-            data: nextLaunch.success
+            data: nextFlight.success
               ? 'Success'
-              : nextLaunch.success === false
+              : nextFlight.success === false
               ? 'Failure'
               : 'Yet unknown',
           },
         ]"
         :links="[
-          { url: nextLaunch.links.webcast, text: 'Watch on youtube' },
-          { url: nextLaunch.links.article, text: 'Read the full article' },
-          { url: nextLaunch.links.reddit.campaign, text: 'Campaign in Reddit' },
+          { url: nextFlight.links.webcast, text: 'Watch on youtube' },
+          { url: nextFlight.links.article, text: 'Read the full article' },
+          { url: nextFlight.links.reddit.campaign, text: 'Campaign in Reddit' },
         ]"
       />
       <h1>Latest flight</h1>
       <b-card
-        :title="latestLaunch.name"
+        :title="latestFlight.name"
         :subtitle="{
-          first: `Flight number ${latestLaunch.flight_number}`,
-          second: latestLaunch.date_utc
-            .replace('T', ' · ')
-            .replace(':00.000Z', ''),
+          first: `Flight number ${latestFlight.flight_number}`,
+          second: latestFlight.date_utc,
         }"
-        :img="latestLaunch.links.patch.small"
-        :description="latestLaunch.details"
+        :img="latestFlight.links.patch.small"
+        :description="latestFlight.details"
         :additionalInfo="[
           {
             text: 'Rocket: ',
-            data: rockets.find((rocket) => rocket.id === latestLaunch.rocket)
+            data: rockets.find((rocket) => rocket.id === latestFlight.rocket)
               .name,
           },
           {
             text: 'Mission status: ',
-            data: latestLaunch.success
+            data: latestFlight.success
               ? 'Success'
-              : latestLaunch.success === false
+              : latestFlight.success === false
               ? 'Failure'
               : '',
           },
         ]"
         :links="[
-          { url: latestLaunch.links.webcast, text: 'Watch on youtube' },
-          { url: latestLaunch.links.article, text: 'Read the full article' },
+          { url: latestFlight.links.webcast, text: 'Watch on youtube' },
+          { url: latestFlight.links.article, text: 'Read the full article' },
           {
-            url: latestLaunch.links.reddit.campaign,
+            url: latestFlight.links.reddit.campaign,
             text: 'Campaign in Reddit',
           },
         ]"
@@ -77,18 +73,20 @@
       <div id="scroll"></div>
       <h1>Past flights</h1>
       <b-card-pagination
-        :records="pastLaunches.length"
+        :records="pastFlights.length"
         :perPage="5"
-        :data="pastLaunches"
+        :data="pastFlights"
         :rockets="rockets"
       />
     </div>
   </div>
 </template>
 <script>
-import useFetch from "@/hooks/useFetch";
-import BCard from "@/components/app/BCard";
-import BCardPagination from "@/components/shared/BCardPagination";
+import { onBeforeMount, reactive, toRefs } from "vue";
+import { getPastFlights, getNextFlight } from "@/service/getFlights";
+import { getAllRockets } from "@/service/getRockets";
+import BCard from "@/components/shared/BCard";
+import BCardPagination from "@/components/app/BCardPagination";
 
 export default {
   name: "Home",
@@ -97,56 +95,50 @@ export default {
     BCardPagination,
   },
   setup() {
-    const latestLaunchUrl = "https://api.spacexdata.com/v4/launches/latest";
-    const pastLaunchesUrl = "https://api.spacexdata.com/v4/launches/past";
-    const nextLaunchUrl = "https://api.spacexdata.com/v4/launches/next";
-    const rocketsUrl = "https://api.spacexdata.com/v4/rockets";
+    const state = reactive({
+      rockets: [],
+      pastFlights: [],
+      nextFlight: {},
+      latestFlight: {},
+      fetching: false,
+      error: false,
+    });
 
-    const {
-      response: rockets,
-      error: rocketsError,
-      fetching: rocketsFetching,
-      fetchData: rocketsFetch,
-    } = useFetch(rocketsUrl);
-    rocketsFetch();
+    onBeforeMount(() => {
+      state.fetching = true;
+      getAllRockets()
+        .then((res) => {
+          state.rockets = res;
+        })
+        .catch(() => {
+          state.error = true;
+        });
 
-    const {
-      response: latestLaunch,
-      error: latestError,
-      fetching: latestFetching,
-      fetchData: latestFetchData,
-    } = useFetch(latestLaunchUrl);
-    latestFetchData();
+      getPastFlights()
+        .then((res) => {
+          state.pastFlights = res;
+          state.pastFlights.reverse()
+          state.latestFlight = res[0];
+          state.pastFlights = state.pastFlights.slice(1)
+        })
+        .catch(() => {
+          state.error = true;
+        });
 
-    const {
-      response: pastLaunches,
-      error: pastError,
-      fetching: pastFetching,
-      fetchData: pastFetchData,
-    } = useFetch(pastLaunchesUrl);
-    pastFetchData();
-
-    const {
-      response: nextLaunch,
-      fetching: nextFetching,
-      error: nextError,
-      fetchData: nextFetchData,
-    } = useFetch(nextLaunchUrl);
-    nextFetchData();
+      getNextFlight()
+        .then((res) => {
+          state.nextFlight = res;
+        })
+        .catch(() => {
+          state.error = true;
+        })
+        .finally(() => {
+          state.fetching = false;
+        });
+    });
 
     return {
-      latestLaunch,
-      latestError,
-      latestFetching,
-      pastLaunches,
-      pastError,
-      pastFetching,
-      nextLaunch,
-      nextFetching,
-      nextError,
-      rockets,
-      rocketsError,
-      rocketsFetching,
+      ...toRefs(state),
     };
   },
 };

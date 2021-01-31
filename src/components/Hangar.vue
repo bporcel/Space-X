@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import BCard from "@/components/app/BCard";
+import BCard from "@/components/shared/BCard";
 import useFetch from "@/hooks/useFetch";
 export default {
   name: "Hangar",
