@@ -45,10 +45,10 @@ header {
   grid-gap: 10em;
 
   & .coffee {
-    width: 170px;
+    width: 200px;
     & img {
-      width: 25px;
-      vertical-align: middle;
+      width: 50px;
+      vertical-align: bottom;
     }
   }
 }
