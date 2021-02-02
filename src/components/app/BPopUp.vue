@@ -39,7 +39,7 @@ export default {
 .opacity {
   position: fixed;
   background-color: $black;
-  opacity: 70%;
+  opacity: 0.7;
   top: 0;
   left: 0;
   right: 0;
