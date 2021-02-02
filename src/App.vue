@@ -9,21 +9,52 @@
       <b-counter />
     </div>
   </div>
+  <transition name="fade" mode="out-in">
+    <b-pop-up v-if="showPopUp" :handleClick="handleClickClosePopup" />
+  </transition>
 </template>
 
 <script>
+import { onMounted, ref } from "vue";
 import BHeader from "@/components/shared/BHeader";
 import BCounter from "@/components/app/BCounter";
+import BPopUp from "@/components/app/BPopUp";
 export default {
   name: "App",
   components: {
     BCounter,
     BHeader,
+    BPopUp,
+  },
+  setup() {
+    const showPopUp = ref(false);
+
+    const handleClickClosePopup = () => {
+      showPopUp.value = false;
+    };
+
+    onMounted(() => {
+      window.setTimeout(() => {
+        showPopUp.value = true;
+      }, 20000);
+    });
+
+    return { showPopUp, handleClickClosePopup };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 700ms;
+}
+
 .title {
   margin-top: 2.5em;
   font-size: 3em;
@@ -76,11 +107,11 @@ body {
   text-decoration: none;
 
   &:hover {
-    color: $brown;
+    color: $blue;
   }
 
   &.active {
-    color: $brown;
+    color: $blue;
   }
 }
 

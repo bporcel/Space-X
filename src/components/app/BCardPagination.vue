@@ -97,8 +97,10 @@ export default {
       const start = (state.currentPage - 1) * props.perPage;
       const end = start + props.perPage;
       state.items = props.data.slice(start, end);
+      
       const scroll = document.getElementById("scroll");
-      scroll.scrollIntoView({ behavior: "smooth" });
+      const y = scroll.getBoundingClientRect().top + window.pageYOffset + -80;
+      window.scrollTo({top: y, behavior: 'smooth'})
     };
 
     return { ...toRefs(state), totalPages, handleClickButton };
@@ -118,11 +120,11 @@ button {
   cursor: pointer;
 
   &.active {
-    color: $brown;
+    color: $blue;
   }
 
   &:hover {
-    color: $brown;
+    color: $blue;
   }
 
   &#next {

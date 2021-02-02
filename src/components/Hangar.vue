@@ -22,19 +22,25 @@
 
 <script>
 import BCard from "@/components/shared/BCard";
-import useFetch from "@/hooks/useFetch";
+import { getAllRockets } from "@/service/getRockets";
+import { onBeforeMount, reactive, toRefs } from "vue";
 export default {
   name: "Hangar",
   components: { BCard },
   setup() {
-    const rocketsUrl = "https://api.spacexdata.com/v4/rockets";
-    const { response: rockets, error, fetching, fetchData } = useFetch(
-      rocketsUrl
-    );
-    fetchData();
-    return { rockets, error, fetching };
+    const state = reactive({
+      rockets: [],
+      fetching: false,
+      error: false,
+    });
+
+    onBeforeMount(() => {
+      getAllRockets().then((res) => {
+        state.rockets = res;
+      });
+    });
+
+    return { ...toRefs(state) };
   },
 };
 </script>
-
-<style scoped></style>

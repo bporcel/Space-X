@@ -11,12 +11,6 @@
         >Hangar</router-link
       >
     </div>
-    <a
-      class="link coffee"
-      href="https://www.buymeacoffee.com/bporcel"
-      target="_blank"
-      >Buy me a cofee <img src="~@/assets/bmac.png"
-    /></a>
   </header>
 </template>
 
@@ -34,30 +28,9 @@ export default {
 <style lang="scss">
 header {
   position: fixed;
-  background-color: #2c3e50;
+  background-color: $darkBlue;
   width: 100%;
   top: 0;
   padding: 2em 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-  justify-content: space-between;
-  grid-gap: 10em;
-
-  & .coffee {
-    width: 200px;
-    & img {
-      width: 50px;
-      vertical-align: bottom;
-    }
-  }
-}
-
-@media screen and (max-width: 450px) {
-  header {
-    grid-template-rows: auto auto;
-    grid-template-columns: auto;
-    grid-gap: 0.5em;
-  }
 }
 </style>
