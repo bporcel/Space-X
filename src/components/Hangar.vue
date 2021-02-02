@@ -35,9 +35,17 @@ export default {
     });
 
     onBeforeMount(() => {
-      getAllRockets().then((res) => {
-        state.rockets = res;
-      });
+      state.fetching = true;
+      getAllRockets()
+        .then((res) => {
+          state.rockets = res;
+        })
+        .catch(() => {
+          state.error = true;
+        })
+        .finally(() => {
+          state.fetching = false;
+        });
     });
 
     return { ...toRefs(state) };
