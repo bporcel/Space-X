@@ -1,6 +1,6 @@
 <template>
   <b-header />
-  <h1 class="title">Space-x launch missions</h1>
+  <h1 class="title">SpaceX missions</h1>
   <div class="grid">
     <div class="cardWrapper">
       <router-view />

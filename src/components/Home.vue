@@ -1,13 +1,20 @@
 <template>
+  <teleport to="head">
+    <title>SpaceX missions</title>
+  </teleport>
   <p v-if="fetching">
     Fetching data
   </p>
   <p v-else-if="error">
     An error occurred fetching the latest launch.
   </p>
-  <div v-else-if="rockets.length > 0 && nextFlight && latestFlight && pastFlights.length > 0">
+  <div
+    v-else-if="
+      rockets.length > 0 && nextFlight && latestFlight && pastFlights.length > 0
+    "
+  >
     <div class="flights">
-      <h1>Next flight</h1>
+      <h2>Next flight</h2>
       <b-card
         :title="nextFlight.name"
         :subtitle="{
@@ -37,7 +44,7 @@
           { url: nextFlight.links.reddit.campaign, text: 'Campaign in Reddit' },
         ]"
       />
-      <h1>Latest flight</h1>
+      <h2>Latest flight</h2>
       <b-card
         :title="latestFlight.name"
         :subtitle="{
@@ -71,7 +78,7 @@
         ]"
       />
       <div id="scroll"></div>
-      <h1>Past flights</h1>
+      <h2>Past flights</h2>
       <b-card-pagination
         :records="pastFlights.length"
         :perPage="5"
@@ -117,9 +124,9 @@ export default {
       getPastFlights()
         .then((res) => {
           state.pastFlights = res;
-          state.pastFlights.reverse()
+          state.pastFlights.reverse();
           state.latestFlight = res[0];
-          state.pastFlights = state.pastFlights.slice(1)
+          state.pastFlights = state.pastFlights.slice(1);
         })
         .catch(() => {
           state.error = true;

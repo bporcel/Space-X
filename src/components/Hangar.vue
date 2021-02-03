@@ -1,5 +1,8 @@
 <template>
-  <h1>Hangar</h1>
+  <teleport to="head">
+    <title>SpaceX hangar</title>
+  </teleport>
+  <h2>Hangar</h2>
   <div v-if="fetching">Fetching data</div>
   <div v-else-if="error">An error occurred</div>
   <div v-else>

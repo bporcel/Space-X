@@ -1,5 +1,5 @@
 <template>
-  <h1>Counter</h1>
+  <h2>Mission's status</h2>
   <div v-if="fetching">Fetching flights</div>
   <div v-else-if="error">An error occurred</div>
   <div v-else class="card">
