@@ -8,17 +8,4 @@ module.exports = {
       },
     },
   },
-
-  pluginOptions: {
-    prerenderSpa: {
-      registry: undefined,
-      renderRoutes: [
-        '/',
-        '/hangar'
-      ],
-      useRenderEvent: true,
-      headless: true,
-      onlyProduction: true
-    }
-  }
 };
