@@ -12,6 +12,7 @@
   <transition name="fade" mode="out-in">
     <b-pop-up v-if="showPopUp" :handleClick="handleClickClosePopup" />
   </transition>
+  <div class="margin-bottom" />
 </template>
 
 <script>
@@ -45,6 +46,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.margin-bottom {
+  margin-bottom: 200px;
+}
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;

@@ -6,7 +6,7 @@
       }}<span class="subtitleSecond">{{ subtitle.second }}</span>
     </p>
     <div :class="img ? 'grid' : ''">
-      <img v-if="img" :src="img" />
+      <img v-if="img" :src="img" :alt="title" />
       <div>
         <p class="description">{{ description }}</p>
         <p
@@ -171,6 +171,8 @@ export default {
 @media screen and (max-width: 700px) {
   .card {
     & a {
+      padding: .5em 0;
+      margin: .5em 0;
       display: block;
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <teleport to="head">
-    <title>SpaceX missions</title>
+    <title>SpaceX flight missions</title>
   </teleport>
   <p v-if="fetching">
     Fetching data

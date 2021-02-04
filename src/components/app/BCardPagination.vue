@@ -97,10 +97,10 @@ export default {
       const start = (state.currentPage - 1) * props.perPage;
       const end = start + props.perPage;
       state.items = props.data.slice(start, end);
-      
+
       const scroll = document.getElementById("scroll");
       const y = scroll.getBoundingClientRect().top + window.pageYOffset + -80;
-      window.scrollTo({top: y, behavior: 'smooth'})
+      window.scrollTo({ top: y, behavior: "smooth" });
     };
 
     return { ...toRefs(state), totalPages, handleClickButton };
@@ -133,6 +133,12 @@ button {
 
   &#prev {
     font-size: 1.5em;
+  }
+}
+@media only screen and (max-width: 500px) {
+  button {
+    padding: .4em .4em;
+    margin: .4em;
   }
 }
 </style>
