@@ -8,13 +8,6 @@
     "lint": "vue-cli-service lint",
     "postbuild": "react-snap"
   },
-  "reactSnap": {
-    "source": "dist",
-    "minifyHtml": {
-      "collapseWhitespace": false,
-      "removeComments": false
-    }
-  },
   "dependencies": {
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
@@ -29,10 +22,8 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
     "node-sass": "^5.0.0",
-    "prerender-spa-plugin": "^3.2.1",
     "react-snap": "^1.23.0",
-    "sass-loader": "^10.1.1",
-    "vue-cli-plugin-prerender-spa": "~1.1.6"
+    "sass-loader": "^10.1.1"
   },
   "eslintConfig": {
     "root": true,
@@ -52,5 +43,12 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "reactSnap": {
+    "source": "dist",
+    "minifyHtml": {
+      "collapseWhitespace": false,
+      "removeComments": false
+    }
+  }
 }
