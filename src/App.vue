@@ -7,11 +7,11 @@
     </div>
     <div class="counter">
       <b-counter />
-    </div>
-  </div>
   <transition name="fade" mode="out-in">
     <b-pop-up v-if="showPopUp" :handleClick="handleClickClosePopup" />
   </transition>
+    </div>
+  </div>
   <div class="margin-bottom" />
 </template>
 
@@ -125,7 +125,7 @@ body {
   color: #ffffff;
 }
 
-@media screen and (max-width: 1800px) {
+@media screen and (max-width: 1400px) {
   #app {
     margin: 1em;
   }

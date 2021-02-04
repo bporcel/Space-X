@@ -36,24 +36,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.opacity {
-  position: fixed;
-  background-color: $black;
-  opacity: 0.7;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
 .pop-up {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  width: 30%;
   padding: 0em 2em 1em 2em;
   border: solid 2px $darkBlue;
+  width: 23%;
 
   & .beer {
     text-decoration: none;
@@ -84,10 +71,27 @@ export default {
     width: 300px;
   }
 }
-
 @media only screen and (max-width: 1400px) {
   .pop-up {
-    width: 40%;
+    right: 1.3em;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .opacity {
+    position: fixed;
+    background-color: $black;
+    opacity: 0.7;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .pop-up {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 60%;
   }
 }
 

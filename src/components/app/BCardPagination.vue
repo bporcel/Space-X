@@ -22,6 +22,10 @@
           ? 'Failure'
           : 'Yet unknown',
       },
+      {
+        text: !item.success && item.failures.length > 0 ? 'Reason: ' : '',
+        data: getFailureReason(item.failures),
+      },
     ]"
     :links="[
       { url: item.links.webcast, text: 'Watch on youtube' },
@@ -103,7 +107,25 @@ export default {
       window.scrollTo({ top: y, behavior: "smooth" });
     };
 
-    return { ...toRefs(state), totalPages, handleClickButton };
+    const getFailureReason = (failures) => {
+      let str = "";
+      failures.forEach((failure, i) => {
+        if (i === failures.length - 1) {
+          str += failure.reason;
+        } else {
+          str += `${failure.reason}, `;
+        }
+      });
+      str = str.charAt(0).toUpperCase() + str.slice(1);
+      return str;
+    };
+
+    return {
+      ...toRefs(state),
+      totalPages,
+      handleClickButton,
+      getFailureReason,
+    };
   },
 };
 </script>
@@ -137,8 +159,8 @@ button {
 }
 @media only screen and (max-width: 500px) {
   button {
-    padding: .4em .4em;
-    margin: .4em;
+    padding: 0.4em 0.4em;
+    margin: 0.4em;
   }
 }
 </style>

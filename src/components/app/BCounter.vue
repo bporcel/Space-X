@@ -2,7 +2,7 @@
   <h2>Mission's status</h2>
   <div v-if="fetching">Fetching flights</div>
   <div v-else-if="error">An error occurred</div>
-  <div v-else class="card">
+  <div v-else class="card counter">
     <p><strong>Total flights:</strong> {{ totalFlights }}</p>
     <p><strong>Succesfull flights:</strong> {{ successfullFlights }}</p>
     <p><strong>Failures:</strong> {{ failures }}</p>
@@ -57,3 +57,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.counter {
+  min-width: 15em;
+}
+</style>

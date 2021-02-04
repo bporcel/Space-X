@@ -65,7 +65,11 @@
               ? 'Success'
               : latestFlight.success === false
               ? 'Failure'
-              : '',
+              : 'Unknown',
+          },
+          {
+            text: !latestFlight.success && latestFlight.failures.length > 0 ? 'Reason: ' : '',
+            data: getFailureReason(latestFlight.failures),
           },
         ]"
         :links="[
@@ -144,8 +148,22 @@ export default {
         });
     });
 
+    const getFailureReason = (failures) => {
+      let str = "";
+      failures.forEach((failure, i) => {
+        if (i === failures.length - 1) {
+          str += failure.reason;
+        } else {
+          str += `${failure.reason}, `;
+        }
+      });
+      str = str.charAt(0).toUpperCase() + str.slice(1);
+      return str;
+    };
+
     return {
       ...toRefs(state),
+      getFailureReason,
     };
   },
 };
